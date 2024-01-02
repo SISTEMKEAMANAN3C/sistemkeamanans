@@ -113,7 +113,7 @@ func Login(privatekeykatalogkemanan, mongoenvkatalogfilm, dbname, collname strin
 	return GCFReturnStruct(response)
 }
 
-func CreateAllformm(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
+func CreateAllform(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
 	var response Pesan
 	response.Status = false
 	mconn := SetConnection(mongoenvkatalogfilm, dbname)
