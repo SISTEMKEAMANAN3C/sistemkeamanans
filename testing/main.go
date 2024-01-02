@@ -56,7 +56,7 @@ func TambahFilmAPI(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, katalogfilm.CreateAllformm("publickeykatalogkemanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
+	fmt.Fprintf(w, katalogfilm.CreateAllform("publickeykatalogkemanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
 }
 func DeleteAllform(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
