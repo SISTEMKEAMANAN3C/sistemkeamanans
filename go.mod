@@ -1,9 +1,10 @@
-module github.com/SISTEMKEAMANAN3C/siskem
+module github.com/SISTEMKEAMANAN3C/sistemkeamanans
 
 go 1.19
 
 require (
 	aidanwoods.dev/go-paseto v1.5.1
+	github.com/SISTEMKEAMANAN3C/siskem v0.0.0-20240101130159-d9ffea552694
 	github.com/aiteung/atdb v0.1.5
 	go.mongodb.org/mongo-driver v1.13.1
 	golang.org/x/crypto v0.17.0
