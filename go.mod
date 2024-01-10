@@ -1,6 +1,8 @@
 module github.com/SISTEMKEAMANAN3C/sistemkeamanans
 
-go 1.19
+go 1.21
+
+toolchain go1.21.3
 
 require (
 	aidanwoods.dev/go-paseto v1.5.1
