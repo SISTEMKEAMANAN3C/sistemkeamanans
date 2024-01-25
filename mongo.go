@@ -126,6 +126,8 @@ func Getall(mongoconn *mongo.Database, collection string) FormInputAll {
 	return sidang
 }
 
+// TDE
+
 func EncryptData(mconn *mongo.Database, collection string) string {
 	dataencrypt := Encrypt(collection, "", "", "", nil)
 	return dataencrypt

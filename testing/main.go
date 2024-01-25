@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	katalogfilm "github.com/SISTEMKEAMANAN3C/siskem"
+	peda "github.com/SISTEMKEAMANAN3C/sistemkeamanans"
 )
 
 func AuthorizationAPI(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +57,7 @@ func TambahFilmAPI(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, katalogfilm.CreateAllformm("publickeykatalogkemanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
+	fmt.Fprintf(w, katalogfilm.CreateAllform("publickeykatalogkemanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
 }
 func DeleteAllform(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
@@ -107,6 +108,30 @@ func GetAllform(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, katalogfilm.AmbilSemuaFilm("mongoenvkatalogfilm", "sistemkeamanan", "form", r))
+}
+
+func EncryptingHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization,Token")
+		w.Header().Set("Access-Control-Max-Age", "3600")
+		w.WriteHeader(http.StatusNoContent)
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, peda.Base64Encode("publickeykatalogkeamanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
+}
+
+func DecryptingHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type,Authorization,Token,Key")
+		w.Header().Set("Access-Control-Max-Age", "3600")
+		w.WriteHeader(http.StatusNoContent)
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, peda.Base64Decode("publickeykatalogkeamanan", "mongoenvkatalogfilm", "sistemkeamanan", "form", r))
 }
 
 func handlerRequests() {
