@@ -125,3 +125,15 @@ func Getall(mongoconn *mongo.Database, collection string) FormInputAll {
 	sidang := atdb.GetAllDoc[FormInputAll](mongoconn, collection)
 	return sidang
 }
+
+// TDE
+
+func EncryptData(mconn *mongo.Database, collection string) string {
+	dataencrypt := Encrypt(collection, "", "", "", nil)
+	return dataencrypt
+}
+
+func DecryptData(mconn *mongo.Database, collection string) string {
+	dataencrypt := Decrypt(collection, "", "", "", nil)
+	return dataencrypt
+}

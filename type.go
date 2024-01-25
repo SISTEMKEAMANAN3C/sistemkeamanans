@@ -128,3 +128,12 @@ type Akademis struct {
 	Kemampuan_dosen   string `json:kemampuan_dosen bson:"kemampuan_dosen"`
 	Penghargaan_dosen string `json:penghargaan_dosen bson:"penghargaan_dosen"`
 }
+
+type DocumentInput struct {
+	filetypes    string `json:filetypes bson:"filetypes"`
+	Documentfile string `json:documents bson:"documents"`
+}
+
+type Document struct {
+	Encrypted_Docs Backend `json:document bson:"document"`
+}

@@ -1,10 +1,14 @@
 package peda
 
 import (
+	"bytes"
+	"encoding/base64"
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 
+	"github.com/jung-kurt/gofpdf"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -130,6 +134,7 @@ func CreateAllform(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collnam
 		response.Message = "Header login tidak ditemukan"
 		return GCFReturnStruct(response)
 	}
+
 	tokenname := DecodeGetName(os.Getenv(publickeykatalogkemanan), header)
 	tokenusername := DecodeGetUsername(os.Getenv(publickeykatalogkemanan), header)
 	tokenrole := DecodeGetRole(os.Getenv(publickeykatalogkemanan), header)
@@ -278,4 +283,93 @@ func AmbilSemuaFilm(mongoenvkatalogfilm, dbname, collname string, r *http.Reques
 	mconn := SetConnection(mongoenvkatalogfilm, dbname)
 	datafilmm := Getall(mconn, collname)
 	return GCFReturnStruct(datafilmm)
+}
+
+// Keamanaan (Tranfer data Encrypt dan Decrypt)
+
+func PDFGenerate() {
+	pdf := gofpdf.New("", "", "", "")
+	pdf.AddPage()
+	pdf.SetFont("Arial", "B", 16)
+	pdf.Text(20, 30, "Hello World!")
+
+	err := pdf.OutputFileAndClose("./hello.pdf")
+	if err != nil {
+		log.Fatalf("Failed creating pdf: %s", err)
+	}
+}
+
+func Base64Encode(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
+	var response Pesan
+	response.Status = false
+	var encryptdata DocumentInput
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(&encryptdata)
+
+	if err != nil {
+		response.Message = "Error parsing application/json: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	encrypt := base64.StdEncoding.EncodeToString(buf.Bytes())
+	response.Status = true
+	response.Message = "Berhasil encrypt data"
+	response.Data = encrypt
+
+	return GCFReturnStruct(response)
+}
+
+func Base64Decode(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
+	var response Pesan
+	response.Status = false
+	var encryptdata Document
+	err := json.NewDecoder(r.Body).Decode(&encryptdata)
+	if err != nil {
+		response.Message = "Error parsing application/json: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	decoded, err := base64.StdEncoding.DecodeString(encryptdata.Encrypted_Docs.Autentikasitoken)
+	if err != nil {
+		response.Message = "Error decoding base64: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	encrypt := string(decoded)
+	response.Status = true
+	response.Message = "Berhasil decrypt data"
+	response.Data = encrypt
+
+	return GCFReturnStruct(response)
+}
+
+func Encrypt(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
+	var response Pesan
+	response.Status = false
+	var encrypting Backend
+	err := json.NewDecoder(r.Body).Decode(&encrypting)
+	if err != nil {
+		response.Message = "Error parsing application/json: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	encrypt := Base64Encode(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname, r)
+	response.Status = true
+	response.Message = "Berhasil encrypt data"
+	response.Data = encrypt
+
+	return GCFReturnStruct(response)
+}
+
+func Decrypt(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname string, r *http.Request) string {
+	var response Pesan
+	response.Status = false
+	var decrypting Document
+	err := json.NewDecoder(r.Body).Decode(&decrypting)
+	if err != nil {
+		response.Message = "Error parsing application/json: " + err.Error()
+		return GCFReturnStruct(response)
+	}
+	decrypt := Base64Decode(publickeykatalogkemanan, mongoenvkatalogfilm, dbname, collname, r)
+	response.Status = true
+	response.Message = "Berhasil decrypt data"
+	response.Data = decrypt
+
+	return GCFReturnStruct(response)
 }

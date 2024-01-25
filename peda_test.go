@@ -1,6 +1,7 @@
 package peda
 
 import (
+	"encoding/base64"
 	"fmt"
 	"testing"
 )
@@ -87,4 +88,24 @@ func TestUsernameExists(t *testing.T) {
 	datauser := UsernameExists("mongoenvkatalogfilm", "sistemkeamanan", user)
 
 	fmt.Println(datauser)
+}
+
+func TestEncodeBase64(t *testing.T) {
+	var EncodeString string
+
+	Encoding := base64.URLEncoding.EncodeToString([]byte(EncodeString))
+	fmt.Println("Encode Successfull! \n Get your Base64 String : ", Encoding)
+
+}
+
+func TestEncryptBase64(t *testing.T) {
+
+}
+
+func TestDecodeBase64(t *testing.T) {
+
+}
+
+func TestDecryptBase64(t *testing.T) {
+
 }
